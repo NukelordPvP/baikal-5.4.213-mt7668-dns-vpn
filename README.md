@@ -4,7 +4,7 @@ The modified kernel based on [whitehax0r's source ](https://ps4linux.com/downloa
 2. VPN support (Wireguard, OpenVPN), as explained [here](https://ps4linux.com/ps4-linux-vpn-wireguard-openvpn/)
 
 # NEW!!!
-4. registers_AMD_GPU_GLADIUS_ps4_pro.txt by saya applied for better GPU Performance.
+4. registers_AMD_GPU_GLADIUS_ps4_pro.txt by saya applied for better GPU Performance "Haven Benchmark Score: 870" See: https://www.youtube.com/watch?v=9Q1WwvZUEQc&t for comparison.
 5. 480-2160@60-edids supported
 
 This project is actually a continuation of the [MT7668 kernel modules for PS4](https://github.com/noob404yt/mt7668-wifi-bt).
