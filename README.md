@@ -3,6 +3,10 @@ The modified kernel based on [whitehax0r's source ](https://ps4linux.com/downloa
 1. Fix and support for MT7668 WiFi/Bluetooth chipset with fix for DNS issues on PS4s with MT7668 chipset, as explained [here](https://ps4linux.com/dns-issues-mt7668-ps4-linux-fix/)
 2. VPN support (Wireguard, OpenVPN), as explained [here](https://ps4linux.com/ps4-linux-vpn-wireguard-openvpn/)
 
+# NEW!!!
+4. registers_AMD_GPU_GLADIUS_ps4_pro.txt by saya applied for better GPU Performance.
+5. 480-2160@60-edids supported
+
 This project is actually a continuation of the [MT7668 kernel modules for PS4](https://github.com/noob404yt/mt7668-wifi-bt).
 
 ## How to compile PS4 Baikal kernel with MT7668 WiFi & Bluetooth support
