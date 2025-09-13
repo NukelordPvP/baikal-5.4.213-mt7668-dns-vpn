@@ -897,55 +897,249 @@ static const u32 liverpool_golden_registers[] =
 	0x535, 0xffffffff, 0x00000000, /* VM_CONTEXTS_DISABLE */
 };
 
+//static const u32 gladius_golden_common_registers[] =
+//{
+//	mmATC_MISC_CG, 0x000c0fc0, 0x000c0200,
+//	mmCB_HW_CONTROL, 0x0001f3cf, 0x00007208,	// 0x2684
+//	mmCB_HW_CONTROL_2, 0x0f000000, 0x0f000000,
+//	mmCB_HW_CONTROL_3, 0x000001ff, 0x00000040,
+//	mmDB_DEBUG2, 0xf00fffff, 0x00000400,
+//	mmPA_SC_ENHANCE, 0xffffffff, 0x20000001,
+//	mmPA_SC_LINE_STIPPLE_STATE, 0x0000ff0f, 0x00000000,
+//	mmPA_SC_RASTER_CONFIG, 0x3f3fffff, 0x2a00161a,
+//	mmPA_SC_RASTER_CONFIG_1, 0x0000003f, 0x0000002e,
+//	mmRLC_CGCG_CGLS_CTRL, 0x00000003, 0x0020003c, //0x0001003c,
+//	0xec9d, 0xffffffff, 0x0001003c,//mmRLC_CGCG_CGLS_CTRL_3D, 0xffffffff, 0x0001003c,
+//	mmSQ_CONFIG, 0x07f80000, 0x07180000,
+//	mmTA_CNTL_AUX, 0x000f000f, 0x000b0000,
+//	mmTCC_CTRL, 0x00100000, 0xf31fff7f,
+//	mmTCP_ADDR_CONFIG, 0x000003ff, 0x000000f7,
+//	mmTCP_CHAN_STEER_HI, 0xffffffff, 0x00000000,
+//	mmVGT_RESET_DEBUG, 0x00000004, 0x00000004,
+//	mmDCI_CLK_CNTL, 0x00000080, 0x00000000,
+//	mmFBC_DEBUG_COMP, 0x000000f0, 0x00000070,
+//	mmFBC_MISC, 0x9f313fff, 0x14302008,
+//	mmHDMI_CONTROL, 0x313f031f, 0x00000011,
+//};
+
 static const u32 gladius_golden_common_registers[] =
 {
 	mmATC_MISC_CG, 0x000c0fc0, 0x000c0200,
 	mmCB_HW_CONTROL, 0x0001f3cf, 0x00007208,	// 0x2684
 	mmCB_HW_CONTROL_2, 0x0f000000, 0x0f000000,
 	mmCB_HW_CONTROL_3, 0x000001ff, 0x00000040,
-	mmDB_DEBUG2, 0xf00fffff, 0x00000400,
-	mmPA_SC_ENHANCE, 0xffffffff, 0x20000001,
+	mmDB_DEBUG2, 0xf00fffff, 0x00004400,  //previous 400
+	0x2285, 0xf000003f, 0x00000007, /* PA_CL_ENHANCE */ //DONE
+	mmPA_SC_ENHANCE, 0xffffffff, 0x00000001, //mod
+	0x22c9, 0xffffffff, 0x00ffffff, /* PA_SC_FORCE_EOV_MAX_CNTS */ //DONE
 	mmPA_SC_LINE_STIPPLE_STATE, 0x0000ff0f, 0x00000000,
 	mmPA_SC_RASTER_CONFIG, 0x3f3fffff, 0x2a00161a,
 	mmPA_SC_RASTER_CONFIG_1, 0x0000003f, 0x0000002e,
 	mmRLC_CGCG_CGLS_CTRL, 0x00000003, 0x0020003c, //0x0001003c,
-	0xec9d, 0xffffffff, 0x0001003c,//mmRLC_CGCG_CGLS_CTRL_3D, 0xffffffff, 0x0001003c,
+	0x30df, 0xffffffff, 0x00000b00, /* RLC_PG_DELAY_2 */ //DONE or 0x00000b03
+	0x136, 0x00000fff, 0x00000200, /* SCLK_CGTT_BLK_CTRL_REG */ //DONE original 0x00000100
+	//0xec9d, 0xffffffff, 0x0001003c,//mmRLC_CGCG_CGLS_CTRL_3D, 0xffffffff, 0x0001003c,
 	mmSQ_CONFIG, 0x07f80000, 0x07180000,
-	mmTA_CNTL_AUX, 0x000f000f, 0x000b0000,
-	mmTCC_CTRL, 0x00100000, 0xf31fff7f,
+	mmTA_CNTL_AUX, 0x000f000f, 0x00010000, //mod
+	mmTCC_CTRL, 0x00100000, 0x001ff07c, //mod
 	mmTCP_ADDR_CONFIG, 0x000003ff, 0x000000f7,
 	mmTCP_CHAN_STEER_HI, 0xffffffff, 0x00000000,
-	mmVGT_RESET_DEBUG, 0x00000004, 0x00000004,
-	mmDCI_CLK_CNTL, 0x00000080, 0x00000000,
-	mmFBC_DEBUG_COMP, 0x000000f0, 0x00000070,
-	mmFBC_MISC, 0x9f313fff, 0x14302008,
-	mmHDMI_CONTROL, 0x313f031f, 0x00000011,
+	0xf9e, 0x00000001, 0x00000003, /* SEM_CHICKEN_BITS */	//DONE //2 on FAT
+	0x31da, 0x00000008, 0x00000008, /* SPI_RESET_DEBUG */ //DONE
+	0x2300, 0x000000ff, 0x00000000, /* SQ_CONFIG */ //DONE 1 on FAT
+	0x2542, 0x00010000, 0x00010000, /* TA_CNTL_AUX */ //DONE
+	mmVGT_RESET_DEBUG, 0x00000004, 0x00004000, //mod
+	//mmDCI_CLK_CNTL, 0x00000080, 0x00000000, //0x31e
+	//mmFBC_DEBUG_COMP, 0x000000f0, 0x00000070,
+	//mmFBC_MISC, 0x9f313fff, 0x14302008,
+	mmHDMI_CONTROL, 0x313f031f, 0x00000001, //ori 0x00000011
 };
+
+//static const u32 gladius_golden_registers[] =
+//{
+//	mmGRBM_GFX_INDEX, 0xffffffff, 0xe0000000,
+//	mmPA_SC_RASTER_CONFIG, 0xffffffff, 0x2a00161a,
+//	mmPA_SC_RASTER_CONFIG_1, 0xffffffff, 0x0000002e,
+//	mmGB_ADDR_CONFIG, 0xffffffff, 0x22011003, //0x22011003,
+//	mmSPI_RESOURCE_RESERVE_CU_0, 0xffffffff, 0x00000800,
+//	mmSPI_RESOURCE_RESERVE_CU_1, 0xffffffff, 0x00000800,
+//	mmSPI_RESOURCE_RESERVE_EN_CU_0, 0xffffffff, 0x00FF7FBF,
+//	mmSPI_RESOURCE_RESERVE_EN_CU_1, 0xffffffff, 0x00FF7FAF,
+//	0x535, 0xffffffff, 0x00000000, /* VM_CONTEXTS_DISABLE */
+//
+//};
 
 static const u32 gladius_golden_registers[] =
 {
 	mmGRBM_GFX_INDEX, 0xffffffff, 0xe0000000,
+	/* These are all setting OFF_HYSTERESIS = 0x10 */
+	0xf0a8, 0xffffffff, 0x00000100, /* CB_CGTT_SCLK_CTRL */ //DONE
+	0xf082, 0xffffffff, 0x00000100, /* CGTT_BCI_CLK_CTRL */ //DONE
+	0xf0b0, 0xffffffff, 0x00000100, /* CGTT_CP_CLK_CTRL */ //DONE
+	0xf0b2, 0xffffffff, 0x00000100, /* CGTT_CPC_CLK_CTRL */ //DONE
+	0xf0b1, 0xffffffff, 0x00000100, /* CGTT_CPF_CLK_CTRL */ //DONE
+	//0x1579, 0xffffffff, 0x00600100, /* CGTT_DRM_CLK_CTRL0 */ //maybe 0x1008 TODOOODODOODODOODODODOO
+	0xf0a0, 0xffffffff, 0x00000100, /* CGTT_GDS_CLK_CTRL */ //DONE
+	0xf085, 0xffffffff, 0x06000100, /* CGTT_IA_CLK_CTRL */ //DONE
+	0xf088, 0xffffffff, 0x00000100, /* CGTT_PA_CLK_CTRL */ //DONE
+	0xf086, 0xffffffff, 0x06000100, /* CGTT_WD_CLK_CTRL */ //DONE
+	0xf081, 0xffffffff, 0x00000100, /* CGTT_PC_CLK_CTRL */ //DONE
+	0xf0b8, 0xffffffff, 0x00000100, /* CGTT_RLC_CLK_CTRL */ //DONE
+	0xf089, 0xffffffff, 0x00000100, /* CGTT_SC_CLK_CTRL */ //DONE
+	0xf080, 0xffffffff, 0x00000100, /* CGTT_SPI_CLK_CTRL */ //DONE
+	0xf08c, 0xffffffff, 0x00000100, /* CGTT_SQ_CLK_CTRL */ //DONE
+	0xf08d, 0xffffffff, 0x00000100, /* CGTT_SQG_CLK_CTRL */ //DONE
+	0xf094, 0xffffffff, 0x00000100, /* CGTT_SX_CLK_CTRL0 */ //DONE
+	0xf095, 0xffffffff, 0x00000100, /* CGTT_SX_CLK_CTRL1 */ //DONE
+	0xf096, 0xffffffff, 0x00000100, /* CGTT_SX_CLK_CTRL2 */ //DONE
+	0xf097, 0xffffffff, 0x00000100, /* CGTT_SX_CLK_CTRL3 */ //DONE
+	//0xf098, 0xffffffff, 0x00000000, /* CGTT_SX_CLK_CTRL4 */ Not present
+	0xf09b, 0xffffffff, 0x00000100, //DONE
+	//0xf09f, 0xffffffff, 0x00000100, /* CGTT_TCI_CLK_CTRL */ //Not present
+	0xf09e, 0xffffffff, 0x00000100, /* CGTT_TCP_CLK_CTRL */ //DONE
+	0xf084, 0xffffffff, 0x06000100, /* CGTT_VGT_CLK_CTRL */ //DONE
+	0xf0a4, 0xffffffff, 0x00000100, /* DB_CGTT_CLK_CTRL_0 */ //DONE
+	0xf09d, 0xffffffff, 0x00000100, /* TA_CGTT_CTRL */ //DONE
+	0xf0ae, 0xffffffff, 0x00000100, //DONE
+	0xf0ac, 0xffffffff, 0x00000100, /* TCC_CGTT_SCLK_CTRL */ //DONE
+	0xf09c, 0xffffffff, 0x00000100, /* TD_CGTT_CTRL */ //DONE
+	/* */
+	0xf008, 0xffffffff, 0x00010000, /* CGTS_CU0_SP0_CTRL_REG */ //DONE
+	0xf009, 0xffffffff, 0x00030002, /* CGTS_CU0_LDS_SQ_CTRL_REG */ //DONE
+	0xf00a, 0xffffffff, 0x00000007, /* CGTS_CU0_TA_SQC_CTRL_REG */ //DONE
+	0xf00b, 0xffffffff, 0x00060005, /* CGTS_CU0_SP1_CTRL_REG */ //DONE
+	0xf00c, 0xffffffff, 0x00090008, /* CGTS_CU0_TD_TCP_CTRL_REG */ //DONE
+	0xf00d, 0xffffffff, 0x00010000, /* CGTS_CU1_SP0_CTRL_REG */ //DONE
+	0xf00e, 0xffffffff, 0x00030002, /* CGTS_CU1_LDS_SQ_CTRL_REG */ //DONE
+	0xf00f, 0xffffffff, 0x00000007, /* CGTS_CU1_TA_CTRL_REG */ //DONE maybe 0x00040007
+	0xf010, 0xffffffff, 0x00060005, /* CGTS_CU1_SP1_CTRL_REG */  //DONE
+	0xf011, 0xffffffff, 0x00090008, /* CGTS_CU1_TD_TCP_CTRL_REG */ //DONE
+	0xf012, 0xffffffff, 0x00010000, /* CGTS_CU2_SP0_CTRL_REG */ //DONE
+	0xf013, 0xffffffff, 0x00030002, /* CGTS_CU2_LDS_SQ_CTRL_REG */ //DONE
+	0xf014, 0xffffffff, 0x00000007, /* CGTS_CU2_TA_CTRL_REG */ //DONE maybe 0x00000007
+	0xf015, 0xffffffff, 0x00060005, /* CGTS_CU2_SP1_CTRL_REG */ //DONE
+	0xf016, 0xffffffff, 0x00090008, /* CGTS_CU2_TD_TCP_CTRL_REG */ //DONE
+	0xf017, 0xffffffff, 0x00010000, /* CGTS_CU3_SP0_CTRL_REG */ //DONE
+	0xf018, 0xffffffff, 0x00030002, /* CGTS_CU3_LDS_SQ_CTRL_REG */ //DONE
+	0xf019, 0xffffffff, 0x00000007, /* CGTS_CU3_TA_SQC_CTRL_REG */ //DONE maybe 07
+	0xf01a, 0xffffffff, 0x00060005, /* CGTS_CU3_SP1_CTRL_REG */ //DONE
+	0xf01b, 0xffffffff, 0x00090008, /* CGTS_CU3_TD_TCP_CTRL_REG */ //DONE
+	0xf01c, 0xffffffff, 0x00010000, /* CGTS_CU4_SP0_CTRL_REG */ //DONE
+	0xf01d, 0xffffffff, 0x00030002, /* CGTS_CU4_LDS_SQ_CTRL_REG */ //DONE
+	0xf01e, 0xffffffff, 0x00000007, /* CGTS_CU4_TA_CTRL_REG */ //DONE 07
+	0xf01f, 0xffffffff, 0x00060005, /* CGTS_CU4_SP1_CTRL_REG */ //DONE
+	0xf020, 0xffffffff, 0x00090008, /* CGTS_CU4_TD_TCP_CTRL_REG */ //DONE
+	0xf021, 0xffffffff, 0x00010000, /* CGTS_CU5_SP0_CTRL_REG */ //DONE
+	0xf022, 0xffffffff, 0x00030002, /* CGTS_CU5_LDS_SQ_CTRL_REG */ //DONE
+	0xf023, 0xffffffff, 0x00000007, /* CGTS_CU5_TA_CTRL_REG */ //DONE 07
+	0xf024, 0xffffffff, 0x00060005, /* CGTS_CU5_SP1_CTRL_REG */ //DONE
+	0xf025, 0xffffffff, 0x00090008, /* CGTS_CU5_TD_TCP_CTRL_REG */ //DONE
+	0xf026, 0xffffffff, 0x00010000, /* CGTS_CU6_SP0_CTRL_REG */ //DONE
+	0xf027, 0xffffffff, 0x00030002, /* CGTS_CU6_LDS_SQ_CTRL_REG */ //DONE
+	0xf028, 0xffffffff, 0x00000007, /* CGTS_CU6_TA_SQC_CTRL_REG */ //DONE 07
+	0xf029, 0xffffffff, 0x00060005, /* CGTS_CU6_SP1_CTRL_REG */ //DONE
+	0xf02a, 0xffffffff, 0x00090008, /* CGTS_CU6_TD_TCP_CTRL_REG */ //DONE
+	0xf02b, 0xffffffff, 0x00010000, /* CGTS_CU7_SP0_CTRL_REG */ //DONE
+	0xf02c, 0xffffffff, 0x00030002, /* CGTS_CU7_LDS_SQ_CTRL_REG */ //DONE
+	0xf02d, 0xffffffff, 0x00000007, /* CGTS_CU7_TA_SQC_CTRL_REG */ //DONE 07
+	0xf02e, 0xffffffff, 0x00060005, /* CGTS_CU7_SP1_CTRL_REG */ //DONE
+	0xf02f, 0xffffffff, 0x00090008, /* CGTS_CU7_TD_TCP_CTRL_REG */ //DONE
+	0xf030, 0xffffffff, 0x00010000, /* CGTS_CU8_SP0_CTRL_REG */ //DONE
+	0xf031, 0xffffffff, 0x00030002, /* CGTS_CU8_LDS_SQ_CTRL_REG */ //DONE
+	0xf032, 0xffffffff, 0x00000007, /* CGTS_CU8_TA_CTRL_REG */ //DONE 07
+	0xf033, 0xffffffff, 0x00060005, /* CGTS_CU8_SP1_CTRL_REG */ //DONE
+	0xf034, 0xffffffff, 0x00090008, /* CGTS_CU8_TD_TCP_CTRL_REG */ //DONE
+	0xf035, 0xffffffff, 0x00010000, /* CGTS_CU9_SP0_CTRL_REG */ //DONE
+	0xf036, 0xffffffff, 0x00030002, /* CGTS_CU9_LDS_SQ_CTRL_REG */ //DONE
+	0xf037, 0xffffffff, 0x00000007, /* CGTS_CU9_TA_CTRL_REG */ //DONE 07
+	0xf038, 0xffffffff, 0x00060005, /* CGTS_CU9_SP1_CTRL_REG */ //DONE
+	0xf039, 0xffffffff, 0x00090008, /* CGTS_CU9_TD_TCP_CTRL_REG */ //DONE
+	0xf000, 0xffffffff, 0x96941200, /* CGTS_SM_CTRL_REG */ //DONE original 0x96940200
+	0x21c2, 0xffffffff, 0x00900100, /* CP_RB_WPTR_POLL_CNTL */ //DONE
+	0x3109, 0xffffffff, 0x0020003f, /* RLC_CGCG_CGLS_CTRL */ //DONE maybe 0x0020003c
+	0x2684, 0xffffffff, 0x00058208, /* CB_HW_CONTROL */  //DONE original 0x00210000, 0x00018208
+	0xf000, 0x6901FFFF, 0x96940000, /* CGTS_SM_CTRL_REG */ //DONE NOT sure
+	//0x1579, 0xff607fff, 0xfc000100, /* CGTT_DRM_CLK_CTRL0 */
+	0xf080, 0xfdfc0fff, 0x00000100, /* CGTT_SPI_CLK_CTRL */ //DONE probably right
+	0x1bb6, 0x00010000, 0x00010000, /* CRTC_DOUBLE_BUFFER_CONTROL */ //DONE
 	mmPA_SC_RASTER_CONFIG, 0xffffffff, 0x2a00161a,
 	mmPA_SC_RASTER_CONFIG_1, 0xffffffff, 0x0000002e,
-	mmGB_ADDR_CONFIG, 0xffffffff, 0x22011003, //0x22011003,
+	mmGB_ADDR_CONFIG, 0xffffffff, 0x42011003, //0x22011003, //mod
 	mmSPI_RESOURCE_RESERVE_CU_0, 0xffffffff, 0x00000800,
 	mmSPI_RESOURCE_RESERVE_CU_1, 0xffffffff, 0x00000800,
-	mmSPI_RESOURCE_RESERVE_EN_CU_0, 0xffffffff, 0x00FF7FBF,
-	mmSPI_RESOURCE_RESERVE_EN_CU_1, 0xffffffff, 0x00FF7FAF,
+	mmSPI_RESOURCE_RESERVE_EN_CU_0, 0xffffffff, 0x00FFFFBF,
+	mmSPI_RESOURCE_RESERVE_EN_CU_1, 0xffffffff, 0x00FFFFAF,
+	0x31e8, 0xffffffff, 0x00000000, /* SPI_RESOURCE_RESERVE_EN_CU_2 */ //DONE
+	0x31e9, 0xffffffff, 0x00000000, /* SPI_RESOURCE_RESERVE_EN_CU_3 */ //DONE
+	0x31ea, 0xffffffff, 0x00000000, /* SPI_RESOURCE_RESERVE_EN_CU_4 */ //DONE
+	0x31eb, 0xffffffff, 0x00000000, /* SPI_RESOURCE_RESERVE_EN_CU_5*/ //DONE
+	0x31ec, 0xffffffff, 0x00000000, /* SPI_RESOURCE_RESERVE_EN_CU_6 */ //DONE
+	0x31ed, 0xffffffff, 0x00000000, /* SPI_RESOURCE_RESERVE_EN_CU_7 */ //DONE
+	0x31ee, 0xffffffff, 0x00000000, /* SPI_RESOURCE_RESERVE_EN_CU_8 */ //DONE
+	0x31ef, 0xffffffff, 0x00000000, /* SPI_RESOURCE_RESERVE_EN_CU_9 */ //DONE
 	0x535, 0xffffffff, 0x00000000, /* VM_CONTEXTS_DISABLE */
+	0x1401, 0x00002000, 0x00002000, /* GARLIC_FLUSH_CNTL */ //DONE
+	mmRLC_MAX_PG_CU, 0xffffffff, 0x00000024,
 
+	//THIS STUFF WAS SET TO 0x0
+	//mmCC_GC_PRIM_CONFIG, 0xffffffff, 0x0c020001,
+	//mmGRBM_PWR_CNTL, 0xffffffff, 0x00000010,
+	//BUSY/STALL
+	mmCP_BUSY_STAT, 0xffffffff, 0x00008000, //or 0? set1 = 0x00428000
+	mmCP_CPF_BUSY_STAT, 0xffffffff, 0x00000000,
+	mmCP_CPF_STALLED_STAT1, 0xffffffff, 0x00000000,
+	mmCP_CPF_STATUS, 0xffffffff, 0x00000000,
+	mmGDS_CNTL_STATUS, 0xffffffff, 0x00000000,
+	mmGDS_PROTECTION_FAULT, 0xffffffff, 0x00000000,
+	//NOT SURE
+	mmGRBM_STATUS, 0xffffffff, 0x00000000, //0x8000b028 without set1
+	mmGRBM_STATUS2, 0xffffffff, 0x00000000, //0x01000008 without set1
+	mmGRBM_STATUS_SE0, 0xffffffff, 0x00000000, //0x00000006 without set1
+	mmGRBM_STATUS_SE1, 0xffffffff, 0x00000000, //0x00000006 without set1
+	mmGRBM_STATUS_SE2, 0xffffffff, 0x00000000, //0x00000006 without set1
+	mmGRBM_STATUS_SE3, 0xffffffff, 0x00000000, //0x00000006 without set1
+	mmCP_STALLED_STAT2, 0xffffffff, 0x00000000,
+	mmCP_STALLED_STAT3, 0xffffffff, 0x00000000,
+	mmCP_STAT, 0xffffffff, 0x00000000,
+	//SC
+	mmPA_SC_HP3D_TRAP_SCREEN_H, 0xffffffff, 0x00000020,
+	mmPA_SC_HP3D_TRAP_SCREEN_OCCURRENCE, 0xffffffff, 0x00000000,
+	mmPA_SC_HP3D_TRAP_SCREEN_V, 0xffffffff, 0x00000080,
+	mmPA_SC_P3D_TRAP_SCREEN_H, 0xffffffff, 0x00000001,
+	mmPA_SC_P3D_TRAP_SCREEN_OCCURRENCE, 0xffffffff, 0x00000200,
+	mmPA_SC_P3D_TRAP_SCREEN_V, 0xffffffff, 0x00000000,
+	mmPA_SC_TRAP_SCREEN_H, 0xffffffff, 0x00000001,
+	mmPA_SC_TRAP_SCREEN_OCCURRENCE, 0xffffffff, 0x00000200,
+	mmPA_SC_TRAP_SCREEN_V, 0xffffffff, 0x00000000,
+	//SPI
+	mmSPI_DEBUG_BUSY, 0xffffffff, 0x00000000,
+	mmSPI_DEBUG_READ, 0xffffffff, 0x009472c4,
+	mmSPI_PG_ENABLE_STATIC_CU_MASK, 0xffffffff, 0x0000fffe,
+	mmSPI_SLAVE_DEBUG_BUSY, 0xffffffff, 0x00000000,
 };
+
+//static const u32 gladius_mgcg_cgcg_init[] =
+//{
+//	0x0000313a, 0xffffffff, 0x00000003,
+//	0x00003079, 0xffffffff, 0x00020201,
+//	0x00003108, 0xffffffff, 0xfffffffd,
+//	0x0000c200, 0xffffffff, 0xe0000000,
+//	0x0000311d, 0xffffffff, 0xffffffff,
+//	0x0000311e, 0xffffffff, 0xffffffff,
+//	0x0000311f, 0xffffffff, 0x004000ff,
+//	0x0000313a, 0xffffffff, 0x00000001,
+//};
 
 static const u32 gladius_mgcg_cgcg_init[] =
 {
-	0x0000313a, 0xffffffff, 0x00000003,
-	0x00003079, 0xffffffff, 0x00020201,
-	0x00003108, 0xffffffff, 0xfffffffd,
-	0x0000c200, 0xffffffff, 0xe0000000,
-	0x0000311d, 0xffffffff, 0xffffffff,
-	0x0000311e, 0xffffffff, 0xffffffff,
-	0x0000311f, 0xffffffff, 0x004000ff,
-	0x0000313a, 0xffffffff, 0x00000001,
+	//0x0000313a, 0xffffffff, 0x00000003,
+	0x00003079, 0xffffffff, 0x00020201, //checked
+	0x00003108, 0xffffffff, 0xfffffffd, //checked
+	0x0000c200, 0xffffffff, 0xe0000000, //always present
+	0x0000311d, 0xffffffff, 0xffffffff, //Without game running is 0x00000000
+	0x0000311e, 0xffffffff, 0xffffffff, //Without game running is 0x00000000
+	0x0000311f, 0xffffffff, 0x004000ff, //Without game running is 0x000009ff
+	//0x0000313a, 0xffffffff, 0x00000001,
 };
 
 static void cik_init_golden_registers(struct amdgpu_device *adev)

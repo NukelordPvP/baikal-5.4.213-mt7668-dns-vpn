@@ -3184,7 +3184,7 @@ mtk_cfg80211_sched_scan_start(IN struct wiphy *wiphy,
 
 	prSchedScanRequest->u4SsidNum = request->n_match_sets;
 	for (i = 0; i < request->n_match_sets; i++) {
-		if (request->match_sets == NULL || &(request->match_sets[i]) == NULL) {
+		if (request->match_sets == NULL || request->match_sets[i].ssid.ssid_len == 0) {
 			prSchedScanRequest->arSsid[i].u4SsidLen = 0;
 		} else {
 			COPY_SSID(prSchedScanRequest->arSsid[i].aucSsid,

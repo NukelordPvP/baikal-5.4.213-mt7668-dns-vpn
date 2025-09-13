@@ -668,24 +668,111 @@ static const struct drm_display_mode mode_1080p = {
 		 DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
 	.vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9
 };
+/* 95 - 3840x2160@30Hz */
+static const struct drm_display_mode mode_4k30 = {
+    DRM_MODE("3840x2160_30", DRM_MODE_TYPE_DRIVER, 297000, 3840, 4016, 4104, 4400,
+             0, 2160, 2168, 2178, 2250, 0,
+             DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
+    .vrefresh = 30, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9
+};
+
+/* 35 Hz */
+static const struct drm_display_mode mode_4k35 = {
+    DRM_MODE("3840x2160_35", DRM_MODE_TYPE_DRIVER, 346500, 3840, 4016, 4104, 4400,
+             0, 2160, 2168, 2178, 2250, 0,
+             DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
+    .vrefresh = 35,
+    .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9
+};
+
+/* 40 Hz */
+static const struct drm_display_mode mode_4k40 = {
+    DRM_MODE("3840x2160_40", DRM_MODE_TYPE_DRIVER, 396000, 3840, 4016, 4104, 4400,
+             0, 2160, 2168, 2178, 2250, 0,
+             DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
+    .vrefresh = 40,
+    .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9
+};
+
+
+/* 45 Hz */
+static const struct drm_display_mode mode_4k45 = {
+    DRM_MODE("3840x2160_45", DRM_MODE_TYPE_DRIVER, 445500, 3840, 4016, 4104, 4400,
+             0, 2160, 2168, 2178, 2250, 0,
+             DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
+    .vrefresh = 45,
+    .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9
+};
+
+/* 50Hz */
+static const struct drm_display_mode mode_4k50 = {
+    DRM_MODE("3840x2160_50", DRM_MODE_TYPE_DRIVER, 495000, 3840, 4016, 4104, 4400,
+             0, 2160, 2168, 2178, 2250, 0,
+             DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
+    .vrefresh = 50,
+    .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9
+};
+
+/* 55 Hz */
+static const struct drm_display_mode mode_4k55 = {
+    DRM_MODE("3840x2160_55", DRM_MODE_TYPE_DRIVER, 544500, 3840, 4016, 4104, 4400,
+             0, 2160, 2168, 2178, 2250, 0,
+             DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
+    .vrefresh = 55,
+    .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9
+};
+
+/* 97 - 3840x2160@60Hz */
+static const struct drm_display_mode mode_4k60 = {
+    DRM_MODE("3840x2160", DRM_MODE_TYPE_DRIVER, 594000, 3840, 4016, 4104, 4400,
+             0, 2160, 2168, 2178, 2250, 0,
+             DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
+    .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9
+};
 
 int ps4_bridge_get_modes(struct drm_connector *connector)
 {
-	struct drm_device *dev = connector->dev;
-	struct drm_display_mode *newmode;
-	DRM_DEBUG_KMS("ps4_bridge_get_modes\n");
+    struct drm_device *dev = connector->dev;
+    struct drm_display_mode *newmode;
+    DRM_DEBUG_KMS("ps4_bridge_get_modes\n");
 
-	newmode = drm_mode_duplicate(dev, &mode_1080p);
-	drm_mode_probed_add(connector, newmode);
+    // Add 2160p modes with 5Hz increments
+    newmode = drm_mode_duplicate(dev, &mode_4k30);
+    drm_mode_probed_add(connector, newmode);
 
-	//newmode = drm_mode_duplicate(dev, &mode_720p);
-	//drm_mode_probed_add(connector, newmode);
-	//newmode = drm_mode_duplicate(dev, &mode_480p);
-	//drm_mode_probed_add(connector, newmode);
+    newmode = drm_mode_duplicate(dev, &mode_4k35);
+    drm_mode_probed_add(connector, newmode);
 
-	drm_connector_update_edid_property(connector, NULL);
-    
-	return 0;
+    newmode = drm_mode_duplicate(dev, &mode_4k40);
+    drm_mode_probed_add(connector, newmode);
+
+    newmode = drm_mode_duplicate(dev, &mode_4k45);
+    drm_mode_probed_add(connector, newmode);
+
+    newmode = drm_mode_duplicate(dev, &mode_4k50);
+    drm_mode_probed_add(connector, newmode);
+
+    newmode = drm_mode_duplicate(dev, &mode_4k55);
+    drm_mode_probed_add(connector, newmode);
+
+    newmode = drm_mode_duplicate(dev, &mode_4k60);
+    drm_mode_probed_add(connector, newmode);
+
+    // Add 1080p
+    newmode = drm_mode_duplicate(dev, &mode_1080p);
+    drm_mode_probed_add(connector, newmode);
+
+    // Add 720p
+    newmode = drm_mode_duplicate(dev, &mode_720p);
+    drm_mode_probed_add(connector, newmode);
+
+    // Add 480p
+    newmode = drm_mode_duplicate(dev, &mode_480p);
+    drm_mode_probed_add(connector, newmode);
+
+    drm_connector_update_edid_property(connector, NULL);
+
+    return 0;
 }
 
 enum drm_connector_status ps4_bridge_detect(struct drm_connector *connector,
@@ -719,18 +806,48 @@ enum drm_connector_status ps4_bridge_detect(struct drm_connector *connector,
 		return connector_status_disconnected;
 }
 
+// Accept only 1080p@60 & 720p@60
+//int ps4_bridge_mode_valid(struct drm_connector *connector,
+//				  struct drm_display_mode *mode)
+//{
+//	int vic = drm_match_cea_mode(mode);
+//
+//	/* Allow anything that we can match up to a VIC (CEA modes) */
+//	if (!vic || (vic != 16 && vic != 4)) {
+//		return MODE_BAD;
+//	}
+//
+//	return MODE_OK;
+//}
+
+// Accept only what is defined in the list
+//int ps4_bridge_mode_valid(struct drm_connector *connector,
+//                          struct drm_display_mode *mode)
+//{
+//    int vic = drm_match_cea_mode(mode);
+//
+//    // Allow explicitly supported VICs (standard HDMI CEA modes)
+//    switch (vic) {
+//    case 1:   // 640x480p60
+//    case 4:   // 1280x720p60
+//    case 16:  // 1920x1080p60
+//    case 95:  // 3840x2160p30
+//    case 97:  // 3840x2160p60
+//        return MODE_OK;
+//    }
+//
+//    return MODE_BAD;
+//}
+
+// Accept all display modes and log their VIC for debugging
 int ps4_bridge_mode_valid(struct drm_connector *connector,
-				  struct drm_display_mode *mode)
+                          struct drm_display_mode *mode)
 {
-	int vic = drm_match_cea_mode(mode);
-
-	/* Allow anything that we can match up to a VIC (CEA modes) */
-	if (!vic || (vic != 16 && vic != 4)) {
-		return MODE_BAD;
-	}
-
-	return MODE_OK;
+    int vic = drm_match_cea_mode(mode);
+    DRM_DEBUG_KMS("VIC %d allowed\n", vic);
+    return MODE_OK;
 }
+
 
 static int ps4_bridge_attach(struct drm_bridge *bridge)
 {
